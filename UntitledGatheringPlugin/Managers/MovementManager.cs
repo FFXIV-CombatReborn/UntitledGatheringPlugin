@@ -54,7 +54,6 @@ namespace UntitledGatheringPlugin.Managers
 
         public void Update()
         {
-            if (!Plugin.ObjectManager.ShouldGather) return;
             if (TeleportDestination != null && !_isTeleporting)
             {
                 if (Svc.Condition[ConditionFlag.Mounted]) Dismount();

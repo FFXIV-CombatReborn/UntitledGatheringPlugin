@@ -35,7 +35,7 @@ namespace UntitledGatheringPlugin.Managers
                 ShouldGather = false;
                 return;
             }
-            ProcessGatherItem(ShoppingList[0]);
+            ProcessGatherItem(ShoppingList.FirstOrDefault());
 
         }
 
@@ -44,31 +44,27 @@ namespace UntitledGatheringPlugin.Managers
             if (!HasGatheringPointIds(gatheritem)) return;
 
             var territoryCurrent = Svc.ClientState.TerritoryType;
-            var territoryId = gatheritem.GatheringPointIds.Select(g => g.TerritoryType.Row);
-            var territory = Svc.Data.GetExcelSheet<TerritoryType>().GetRow(territoryId.Skip(1).FirstOrDefault());
-            if (territory == null)
-            {
-                Svc.Log.Warning($"No territory found for item: {gatheritem.Name}");
-                return;
-            }
-            var needTeleport = territoryCurrent != territory.RowId;
+            var territoryId = gatheritem.GatheringPointIds.Select(g => g.TerritoryType.Row).Skip(1).FirstOrDefault();
+            var territory = Svc.Data.GetExcelSheet<TerritoryType>().GetRow(territoryId);
+
+            var needTeleport = territory != null && territoryCurrent != territory.RowId;
+
             if (needTeleport)
             {
                 var aetheryte = territory.Aetheryte.Row;
                 Plugin.MovementManager.AertheryteTeleport(aetheryte);
                 return;
             }
+
+            // Attempt to find the closest gatherable if teleportation isn't needed or fails
+            var gatherable = FindClosestGatherable(gatheritem);
+            if (gatherable != null)
+            {
+                NavigateToGatherable(gatherable);
+            }
             else
             {
-                var gatherable = FindClosestGatherable(gatheritem);
-                if (gatherable == null)
-                {
-                    Svc.Log.Warning($"No gatherable found for item: {gatheritem.Name}");
-                    return;
-                }
-
-                NavigateToGatherable(gatherable);
-
+                Svc.Log.Warning($"No gatherable found for item: {gatheritem.Name}");
             }
         }
 
@@ -86,7 +82,15 @@ namespace UntitledGatheringPlugin.Managers
         private GameObject FindClosestGatherable(GatherItem gatheritem)
         {
             var gatherablesByDistance = Gatherables.OrderBy(g => Vector3.Distance(g.Position, Player.Object.Position)).ToList();
-            return gatherablesByDistance.FirstOrDefault(g => gatheritem.GatheringPointIds.Any(gi => gi.RowId == g.DataId));
+            var shoppingListNodes = gatherablesByDistance.FirstOrDefault(g => gatheritem.GatheringPointIds.Any(gi => gi.RowId == g.DataId));
+            if (shoppingListNodes != null)
+            {
+                return shoppingListNodes;
+            }
+            else
+            {
+                return gatherablesByDistance.FirstOrDefault();
+            }
         }
 
 
