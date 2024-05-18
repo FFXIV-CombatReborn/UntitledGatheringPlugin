@@ -1,0 +1,9 @@
+{
+  "Author": "NostraThomas",
+  "Name": "Untitled Gathering Plugin",
+  "InternalName": "UntitledGatheringPlugin",
+  "Description": "Honk-squee!!",
+  "ApplicableVersion": "any",
+  "DalamudApiLevel": 9,
+  "Punchline": "The jankest auto-gather money can buy!"
+}
