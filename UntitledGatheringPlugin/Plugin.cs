@@ -2,6 +2,7 @@
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using ECommons;
+using ECommons.Commands;
 using ECommons.DalamudServices;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
@@ -57,6 +58,12 @@ namespace UntitledGatheringPlugin
         {
             MovementManager.Update();
             ObjectManager.Update();
+        }
+
+        [Cmd("/ugp", "Open debug menu", true, true)]
+        public void OpenDebugMenu(string command, string args)
+        {
+            DebugWindow.IsOpen = true;
         }
 
         private void OnConfigUiOpen()
