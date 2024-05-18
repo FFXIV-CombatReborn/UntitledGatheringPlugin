@@ -1,0 +1,24 @@
+{
+  "Author": "NostraThomas",
+  "Name": "Untitled Gathering Plugin",
+  "InternalName": "UntitledGatheringPlugin",
+  "Description": "Honk-squee!!",
+  "ApplicableVersion": "any",
+  "DalamudApiLevel": 9,
+  "Punchline": "The jankest auto-gather money can buy!",
+  "IconUrl": "https://raw.githubusercontent.com/FFXIV-CombatReborn/UntitledGatheringPlugin/master/Resources/Logo.png",
+  "CategoryTags": [
+    "Gathering",
+    "Utility"
+  ],
+  "IsTestingExclusive": true,
+  "Tags": [
+    "Gathering",
+    "Utility",
+    "Testing",
+    "Experimental",
+    "Jankey",
+    "Honk",
+    "Automatic"
+  ]
+}
