@@ -48,5 +48,5 @@ jobs:
       - name: Publish Plugin
         uses: softprops/action-gh-release@v2
         with:
-          files: ./build/RotationSolver.zip
+          files: ./build/UntitledGatheringPlugin.zip
           token: ${{ secrets.GITHUB_TOKEN }}
